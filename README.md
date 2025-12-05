@@ -9,6 +9,7 @@ The mobile app provides a live camera interface with real-time visual overlays (
 
 
 ## Repository Structure
+```
 smartshot/
 │
 ├── mobile-app/
@@ -18,7 +19,8 @@ smartshot/
 ├── telemetry/              # Logging and synchronization
 ├── model_registry/         # Model versioning
 ├── docs/                   # Project documentation
-└── requirements.txt        # Python dependencies (coming soon)
+└── requirements.txt        # Python dependencies
+```
 
 ## Installation
 <!-- How to set up the development environment -->
