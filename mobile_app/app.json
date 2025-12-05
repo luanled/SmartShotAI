@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "SmartShot AI",
+    "slug": "smartshot-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#D6E9F8"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.smartshot.ai"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#D6E9F8"
+      },
+      "package": "com.smartshot.ai",
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
+    }
+  }
+}
