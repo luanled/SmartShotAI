@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <Stack.Navigator
         initialRouteName="Splash"
         screenOptions={{

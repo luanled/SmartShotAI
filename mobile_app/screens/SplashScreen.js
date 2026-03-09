@@ -1,82 +1,35 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import styles from '../styles/SplashScreen.styles';
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('LiveCamera');
-    }, 3000);
+    }, 2500);
     return () => clearTimeout(timer);
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.iconContainer}>
-        <View style={styles.iconPlaceholder}>
-          <Text style={styles.iconText}>📷</Text>
+    <LinearGradient colors={['#0A0E1A', '#0D1F3C', '#0A0E1A']} style={styles.container}>
+      <View style={styles.iconGlow}>
+        <View style={styles.iconCircle}>
+          <Ionicons name="camera" size={62} color="#fff" />
         </View>
       </View>
-      <View style={styles.brandContainer}>
-        <Text style={styles.brandText}>SmartShot AI</Text>
+
+      <View style={styles.brandRow}>
+        <Text style={styles.brandText}>SmartShot</Text>
+        <Text style={styles.brandAccent}> AI</Text>
       </View>
-      <View style={styles.statusContainer}>
-        <Text style={styles.statusText}>Initializing app ...</Text>
-        <Text style={styles.statusSubText}>Initializing aesthetic model ...</Text>
-        <ActivityIndicator size="large" color="#1E88E5" style={styles.loader} />
+      <Text style={styles.tagline}>AI-Powered Photography Guidance</Text>
+
+      <View style={styles.loaderArea}>
+        <ActivityIndicator size="small" color="#3B82F6" />
+        <Text style={styles.loaderText}>Initializing aesthetic model…</Text>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#D6E9F8',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    marginBottom: 30,
-  },
-  iconPlaceholder: {
-    width: 120,
-    height: 120,
-    backgroundColor: '#1E88E5',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 4,
-    borderColor: '#0D47A1',
-  },
-  iconText: {
-    fontSize: 60,
-  },
-  brandContainer: {
-    backgroundColor: '#1565C0',
-    paddingHorizontal: 40,
-    paddingVertical: 15,
-    borderRadius: 8,
-    marginBottom: 80,
-  },
-  brandText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  statusContainer: {
-    alignItems: 'center',
-  },
-  statusText: {
-    fontSize: 16,
-    color: '#424242',
-    marginBottom: 5,
-  },
-  statusSubText: {
-    fontSize: 14,
-    color: '#616161',
-    marginBottom: 20,
-  },
-  loader: {
-    marginTop: 10,
-  },
-});

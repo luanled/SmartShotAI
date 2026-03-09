@@ -1,0 +1,118 @@
+import { StyleSheet } from 'react-native';
+import { colors } from './theme';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.black,
+  },
+  permissionContainer: {
+    flex: 1,
+    backgroundColor: '#0A0E1A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+  },
+  messageText: {
+    fontSize: 18,
+    color: colors.textPrimary,
+    marginTop: 8,
+  },
+  subMessageText: {
+    fontSize: 14,
+    color: colors.textSecondary,
+  },
+  cameraView: {
+    flex: 1,
+    width: '100%',
+  },
+  topHUD: {
+    position: 'absolute',
+    top: 52,
+    left: 20,
+    right: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  scoreBadge: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    borderWidth: 2.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scoreValue: {
+    fontSize: 22,
+    fontWeight: '700',
+    lineHeight: 24,
+  },
+  scoreLabel: {
+    fontSize: 9,
+    color: colors.textSecondary,
+    letterSpacing: 1,
+    fontWeight: '600',
+  },
+  guidanceChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(37,99,235,0.85)',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  guidanceText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.white,
+  },
+  arrowsOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 40,
+  },
+  arrowsMiddleRow: {
+    flexDirection: 'row',
+    width: 200,
+    justifyContent: 'space-between',
+  },
+  controlBar: {
+    height: 110,
+    backgroundColor: colors.bg,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+    paddingBottom: 12,
+  },
+  sideButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  captureButton: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    borderWidth: 3,
+    borderColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  captureInner: {
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    backgroundColor: colors.white,
+  },
+});
