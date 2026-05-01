@@ -137,3 +137,9 @@ dist
 
 # expo folder
 .expo/
+
+# Model weights for SigLIP scorer
+*.pt
+*.onnx
+*.mlpackage
+*.mlpackage/
