@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { ModelProvider } from './context/ModelContext';
 
 import SplashScreen from './screens/SplashScreen';
 import LiveCameraScreen from './screens/LiveCameraScreen';
@@ -13,6 +14,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <ModelProvider>
     <NavigationContainer>
       <StatusBar style="light" />
       <Stack.Navigator
@@ -28,6 +30,7 @@ function App() {
         <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </ModelProvider>
   );
 }
 

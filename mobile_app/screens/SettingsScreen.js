@@ -1,12 +1,35 @@
-import { useState } from 'react';
-import { View, Text, Switch, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/SettingsScreen.styles';
+import { colors, radius } from '../styles/theme';
+import { useModel } from '../context/ModelContext';
+
+const MODEL_OPTIONS = [
+  {
+    key: 'optimized',
+    label: 'Optimized  7 MB',
+    desc: 'Faster inference, smaller size',
+    icon: 'flash-outline',
+    color: '#22C55E',
+  },
+  {
+    key: 'standard',
+    label: 'Standard  20 MB',
+    desc: 'Full-precision weights',
+    icon: 'layers-outline',
+    color: '#3B82F6',
+  },
+  {
+    key: 'siglip',
+    label: 'SigLIP  356 MB',
+    desc: 'Vision-language aesthetic model',
+    icon: 'eye-outline',
+    color: '#A855F7',
+  },
+];
 
 export default function SettingsScreen({ navigation }) {
-  const [voiceGuidance, setVoiceGuidance] = useState(true);
-  const [vibrationFeedback, setVibrationFeedback] = useState(true);
-  const [personalizationLevel] = useState(50);
+  const { selectedModel, setSelectedModel } = useModel();
 
   return (
     <View style={styles.container}>
@@ -19,77 +42,34 @@ export default function SettingsScreen({ navigation }) {
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-        {/* Feedback */}
-        <Text style={styles.sectionLabel}>FEEDBACK</Text>
+
+        {/* Model Selection */}
+        <Text style={styles.sectionLabel}>SCORING MODEL</Text>
         <View style={styles.card}>
-          <View style={styles.settingRow}>
-            <View style={styles.settingLeft}>
-              <View style={[styles.iconBox, { backgroundColor: 'rgba(59,130,246,0.15)' }]}>
-                <Ionicons name="volume-high-outline" size={18} color="#3B82F6" />
+          {MODEL_OPTIONS.map((opt, idx) => {
+            const selected = selectedModel === opt.key;
+            return (
+              <View key={opt.key}>
+                {idx > 0 && <View style={styles.divider} />}
+                <TouchableOpacity
+                  style={styles.settingRow}
+                  onPress={() => setSelectedModel(opt.key)}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.settingLeft}>
+                    <View style={[styles.iconBox, { backgroundColor: selected ? `${opt.color}22` : 'rgba(139,148,158,0.1)' }]}>
+                      <Ionicons name={opt.icon} size={18} color={selected ? opt.color : colors.textSecondary} />
+                    </View>
+                    <View>
+                      <Text style={[styles.settingLabel, selected && { color: opt.color }]}>{opt.label}</Text>
+                      <Text style={styles.settingDesc}>{opt.desc}</Text>
+                    </View>
+                  </View>
+                  {selected && <Ionicons name="checkmark-circle" size={20} color={opt.color} />}
+                </TouchableOpacity>
               </View>
-              <View>
-                <Text style={styles.settingLabel}>Voice Guidance</Text>
-                <Text style={styles.settingDesc}>Hear audio directions</Text>
-              </View>
-            </View>
-            <Switch
-              value={voiceGuidance}
-              onValueChange={setVoiceGuidance}
-              trackColor={{ false: '#30363D', true: '#1D4ED8' }}
-              thumbColor={voiceGuidance ? '#3B82F6' : '#8B949E'}
-            />
-          </View>
-
-          <View style={styles.divider} />
-
-          <View style={styles.settingRow}>
-            <View style={styles.settingLeft}>
-              <View style={[styles.iconBox, { backgroundColor: 'rgba(168,85,247,0.15)' }]}>
-                <Ionicons name="phone-portrait-outline" size={18} color="#A855F7" />
-              </View>
-              <View>
-                <Text style={styles.settingLabel}>Vibration Feedback</Text>
-                <Text style={styles.settingDesc}>Haptic feedback for guidance</Text>
-              </View>
-            </View>
-            <Switch
-              value={vibrationFeedback}
-              onValueChange={setVibrationFeedback}
-              trackColor={{ false: '#30363D', true: '#6D28D9' }}
-              thumbColor={vibrationFeedback ? '#A855F7' : '#8B949E'}
-            />
-          </View>
-        </View>
-
-        {/* Personalization */}
-        <Text style={styles.sectionLabel}>PERSONALIZATION</Text>
-        <View style={styles.card}>
-          <View style={styles.settingRow}>
-            <View style={styles.settingLeft}>
-              <View style={[styles.iconBox, { backgroundColor: 'rgba(34,197,94,0.15)' }]}>
-                <Ionicons name="sparkles-outline" size={18} color="#22C55E" />
-              </View>
-              <View>
-                <Text style={styles.settingLabel}>AI Adaptation Level</Text>
-                <Text style={styles.settingDesc}>How much the AI adapts to your style</Text>
-              </View>
-            </View>
-            <Text style={styles.settingValue}>{personalizationLevel}%</Text>
-          </View>
-        </View>
-
-        {/* App Info */}
-        <Text style={styles.sectionLabel}>APP INFO</Text>
-        <View style={styles.card}>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Model Version</Text>
-            <Text style={styles.infoValue}>1.0.0</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Build</Text>
-            <Text style={styles.infoValue}>01</Text>
-          </View>
+            );
+          })}
         </View>
 
         {/* Support */}

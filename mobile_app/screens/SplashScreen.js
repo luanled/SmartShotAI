@@ -24,11 +24,11 @@ export default function SplashScreen({ navigation }) {
         <Text style={styles.brandText}>SmartShot</Text>
         <Text style={styles.brandAccent}> AI</Text>
       </View>
-      <Text style={styles.tagline}>AI-Powered Photography Guidance</Text>
+      <Text style={styles.tagline}>AI-Powered Photography Scoring</Text>
 
       <View style={styles.loaderArea}>
         <ActivityIndicator size="small" color="#3B82F6" />
-        <Text style={styles.loaderText}>Initializing aesthetic model…</Text>
+        <Text style={styles.loaderText}>Initializing aesthetic models…</Text>
       </View>
     </LinearGradient>
   );

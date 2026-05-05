@@ -1,15 +1,23 @@
-import { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import styles from '../styles/FeedbackScreen.styles';
 
 export default function FeedbackScreen({ route, navigation }) {
-  const { aestheticScore, capturedImage } = route.params || {};
-  const [feedback, setFeedback] = useState(null);
+  const { aestheticScore, capturedImage, imageWidth: imgW, imageHeight: imgH } = route.params || {};
+  const { width, height } = useWindowDimensions();
+  const isLandscapeScreen = width > height;
+  const isLandscapeImage = imgW && imgH && imgW > imgH;
 
-  const score = aestheticScore || 80;
-  const scoreColor = score >= 70 ? '#22C55E' : score >= 40 ? '#F59E0B' : '#EF4444';
+  const score = aestheticScore;
+  const hasScore = score !== null && score !== undefined;
+  const scoreColor = !hasScore
+    ? '#8B949E'
+    : score >= 70
+    ? '#22C55E'
+    : score >= 40
+    ? '#F59E0B'
+    : '#EF4444';
 
   const handleSave = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();
@@ -38,61 +46,54 @@ export default function FeedbackScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isLandscapeScreen && { flexDirection: 'row' }]}>
       {/* Photo Preview */}
-      <View style={styles.photoArea}>
+      <View style={[styles.photoArea, isLandscapeScreen && { flex: 3 }]}>
         <View style={styles.photoPlaceholder}>
           {capturedImage ? (
-            <Image source={{ uri: capturedImage }} style={styles.photo} resizeMode="cover" />
+            <Image
+              source={{ uri: capturedImage }}
+              style={styles.photo}
+              resizeMode={isLandscapeImage ? 'contain' : 'cover'}
+            />
           ) : (
             <Ionicons name="image-outline" size={64} color="#30363D" />
           )}
           <View style={[styles.scorePill, { borderColor: scoreColor }]}>
-            <Text style={[styles.scorePillText, { color: scoreColor }]}>Score: {score}%</Text>
+            <Text style={[styles.scorePillText, { color: scoreColor }]}>
+              {hasScore ? `Score: ${score}%` : 'Score: N/A'}
+            </Text>
           </View>
         </View>
-
       </View>
 
-      {/* Bottom Sheet */}
-      <View style={styles.sheet}>
-        <Text style={styles.sheetTitle}>How was the guidance?</Text>
-
-        <View style={styles.thumbsRow}>
+      {/* Sheet — bottom in portrait, right panel in landscape */}
+      <View style={[
+        styles.sheet,
+        isLandscapeScreen && {
+          flex: 2,
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 0,
+          borderBottomLeftRadius: 0,
+          borderTopWidth: 0,
+          borderLeftWidth: 1,
+          borderLeftColor: '#21262D',
+          justifyContent: 'center',
+          paddingTop: 24,
+          paddingBottom: 24,
+        },
+      ]}>
+        <View style={[styles.actionRow, isLandscapeScreen && { flexDirection: 'column' }]}>
           <TouchableOpacity
-            style={[styles.thumbBtn, feedback === 'positive' && styles.thumbBtnPositive]}
-            onPress={() => setFeedback('positive')}
+            style={[styles.discardBtn, isLandscapeScreen && { flex: undefined }]}
+            onPress={handleDiscard}
             activeOpacity={0.8}>
-            <Ionicons
-              name="thumbs-up"
-              size={32}
-              color={feedback === 'positive' ? '#2563EB' : '#8B949E'}
-            />
-            <Text style={[styles.thumbLabel, feedback === 'positive' && styles.thumbLabelPositive]}>
-              Helpful
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.thumbBtn, feedback === 'negative' && styles.thumbBtnNegative]}
-            onPress={() => setFeedback('negative')}
-            activeOpacity={0.8}>
-            <Ionicons
-              name="thumbs-down"
-              size={32}
-              color={feedback === 'negative' ? '#EF4444' : '#8B949E'}
-            />
-            <Text style={[styles.thumbLabel, feedback === 'negative' && styles.thumbLabelNegative]}>
-              Not Helpful
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.discardBtn} onPress={handleDiscard} activeOpacity={0.8}>
             <Text style={styles.discardBtnText}>Discard</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.saveBtn} onPress={handleSave} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={[styles.saveBtn, isLandscapeScreen && { flex: undefined }]}
+            onPress={handleSave}
+            activeOpacity={0.8}>
             <Ionicons name="download-outline" size={18} color="#fff" style={{ marginRight: 6 }} />
             <Text style={styles.saveBtnText}>Save Photo</Text>
           </TouchableOpacity>

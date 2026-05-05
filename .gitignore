@@ -138,8 +138,32 @@ dist
 # expo folder
 .expo/
 
-# Model weights for SigLIP scorer
-*.pt
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Backend runtime files
+backend/logs/
+backend/__pycache__/
+
+# Large ML model files (exceed GitHub's 100MB limit)
+tflite/
 *.onnx
+*.onnx.data
+*.tflite
+*.pt
+*.pth
+*.bin
+*.safetensors
 *.mlpackage
 *.mlpackage/
+
+# Claude Code internal settings
+.claude/

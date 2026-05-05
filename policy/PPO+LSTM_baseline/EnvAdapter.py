@@ -106,3 +106,5 @@ class HabitatEnvAdapter(gym.Env):
             'delta': np.array([delta], dtype=np.float32), 
             'egomotion': np.array(egomotion, dtype=np.float32)
         }
+    
+
