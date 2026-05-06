@@ -1,3 +1,4 @@
+import asyncio
 import io
 import json
 import math
@@ -96,10 +97,14 @@ async def score(
     if model in FIXED_INPUT_MODELS:
         w, h = FIXED_INPUT_MODELS[model]
         img = img.resize((w, h), Image.BILINEAR)
-        arr = np.array(img, dtype=np.uint8)[np.newaxis]   # [1, H, W, 3], uint8 0-255
+        arr = np.array(img, dtype=np.uint8)[np.newaxis]
     else:
-        arr = np.array(img, dtype=np.float32)[np.newaxis]  # [1, H, W, 3], float32 0-255
-    outputs = sessions[model].run(None, {input_names[model]: arr})
+        arr = np.array(img, dtype=np.float32)[np.newaxis]
+
+    def run_inference():
+        return sessions[model].run(None, {input_names[model]: arr})
+
+    outputs = await asyncio.to_thread(run_inference)
     server_ms = (time.perf_counter() - t0) * 1000
 
     raw_score = float(outputs[0].flat[0])
