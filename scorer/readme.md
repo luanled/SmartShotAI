@@ -8,19 +8,15 @@ Supports KD on AADB/TAD66K and evaluation-only CPC baseline.
 ```commandline
 repo-root/
 ├─ scorer/
-│  ├─ train_distill_emo.py          # entry point: student KD trainer
-│  ├─ models/                       # EMOv2 wrapper → MLP → scalar [0,1]
-│  ├─ teacher/                      # SigLIP + LAION v2.5 predictor
-│  ├─ datasets/
-│  │  ├─ aadb.py                    # AADB loader (URL→filename resolver)
-│  │  └─ tad66k.py                  # TAD66K loader (merge/train,test CSVs)
-│  ├─ utils/                        # metrics, common helpers
-│  └─ requirements.txt              # pip deps
-├─ data/
-│  ├─ AADB/                         # AADB dataset root
-│  ├─ TAD66K/                       # TAD66K dataset root
-│  └─ CPC/                          # CPC dataset (eval-only)
-└─ runs/                            # outputs: logs, ckpts, metrics
+│  ├── models/                  # EMOv2 backbone wrapper
+│  ├── datasets/                # AVA / AADB / TAD66K loaders
+│  ├── utils/                   # SRCC, PLCC, checkpoint helpers
+│  ├── train_ava.py             # Two-stage AVA training entry point
+│  ├── train_distill_emo.py     # Knowledge-distillation training
+│  ├── runs/
+│  │   └── ava_finetuned/
+│  │       └── ckpt_best.pt     # Final model checkpoint (5.2 M params)
+│  └── requirements.txt
 ```
 **Note.** This repo hosts only the scorer (student + teacher + loaders). RL/APP code lives outside and consumes the scorer’s score(image) → `ŝ ∈ [0,1]` API.
 
@@ -47,35 +43,17 @@ pip install -r scorer/requirements.txt
 Place them under data/ (or anywhere) and pass roots with CLI flags
 
 ## 4. Quickstart
-### 4.1 KD on AADB (teacher guidance only)
 ```commandline
-# from repo-root/
-python scorer/train_distill_emo.py ^
-  --dataset aadb ^
-  --aadb_root data/AADB ^
-  --variant emo2_5m_224 ^
-  --epochs 10 ^
-  --batch_size 32 ^
-  --amp ^
-  --use_teacher --teacher_kind v25 ^
-  --out_dir runs/aadb_kd_v25
+# Install dependencies (conda)
+conda install --file requirements.txt
+
+python train_ava.py \
+        --ava_root ..\data\AVA_dataset \
+        --variant emo2_5m_224 \
+        --epochs 15 \
+        --batch_size 112 \
+        --lr 3e-4 \
+        --freeze_backbone \
+        --amp \
+        --out_dir runs\ava_frozen
 ```
-### 4.2 KD on TAD66K
-```commandline
-# from repo-root/
-python scorer/train_distill_emo.py ^
-  --dataset aadb ^
-  --aadb_root data/AADB ^
-  --variant emo2_5m_224 ^
-  --epochs 10 ^
-  --batch_size 32 ^
-  --amp ^
-  --use_teacher --teacher_kind v25 ^
-  --out_dir runs/aadb_kd_v25
-```
-**Common flags**
-- --num_workers -1 (auto) or 0 on Windows
-- --resume runs/.../ckpt_best.pt to continue
-- --early_stop_patience 8 (default)
-- --lambda_supervised 0.0 (pure KD; set >0 to blend GT when available)
-Outputs in `runs/...: ckpt_best.pt`, `results_val.json`, `results_test.json`, logs.

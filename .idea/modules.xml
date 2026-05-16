@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SmartShot.iml" filepath="$PROJECT_DIR$/.idea/SmartShot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/githubpush.iml" filepath="$PROJECT_DIR$/.idea/githubpush.iml" />
     </modules>
   </component>
 </project>
