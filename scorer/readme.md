@@ -16,6 +16,7 @@ repo-root/
 │  ├── runs/
 │  │   └── ava_finetuned/
 │  │       └── ckpt_best.pt     # Final model checkpoint (5.2 M params)
+│  ├── scorer_siglip            # Finetune SigLip model on AVA and AADB dataset
 │  └── requirements.txt
 ```
 **Note.** This repo hosts only the scorer (student + teacher + loaders). RL/APP code lives outside and consumes the scorer’s score(image) → `ŝ ∈ [0,1]` API.
